@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sharer</title>
+</head
+
+<script src="https://unpkg.com/htmx.org@1.8.2"
+  integrity="sha384-+8ISc/waZcRdXCLxVgbsLzay31nCdyZXQxnsUy++HJzJliTzxKWr0m1cIEMyUzQu" 
+  crossorigin="anonymous">
+</script>
+
+
+<style>
+
+:root {
+    --color-bg: #0e141b;
+    --color-bg-offset: #252526;
+    --color-text: #ffffff;
+    --color-text-offset: #818a91;
+    --color-border: #2d2d2d;
+    --color-primary: #ff5277;
+    --color-primary-offset: #ff2957;
+    --color-secondary: #43a9a3;
+}
+
+/* Heydon Pickering’s lobotomized owl. Details: https://bit.ly/1H7MXUD */
+* + * {
+  margin-top: 1rem;
+  background-color: var(--color-bg);
+  color:#b9b9b9;
+  font-family: "IBM Plex Sans", sans-serif
+}
+
+
+h1 {
+	margin-top: 1em
+}
+
+body {
+  	line-height: 1.45;
+  	font-size: 106.3%;
+	margin: 0 auto;
+	padding: 0.5em;
+	max-width: 40em
+
+}
+
+dl, ol, ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+
+.form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 1rem;
+  grid-column-gap: 2rem;
+}
+
+.form__fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 1rem;
+    grid-column-gap: 2rem;
+}
+
+.form__field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form__label {
+    display: block;
+    font-weight: 700;
+    font-size: .875rem;
+    margin-bottom: .25rem;
+}
+.form__input {
+    display: block;
+    width: 100%;
+    border: 1px solid;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: .5rem 1rem;
+    box-sizing: border-box;
+}
+
+.form__actions {
+    margin: 1rem 0;
+    text-align: right;
+}
+
+.btn--primary {
+    background-color: var(--color-primary);
+    border-color: transparent;
+    color: #fff;
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+    transition: all .15s ease;
+    width: 90px;
+    height: 40px;
+    border-radius: 8px;
+}
+.btn--primary:focus, .btn--primary:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50, 50, 50, .1), 0 3px 6px rgba(0, 0, 0, .08);
+    background-color: var(--color-secondary);
+}
+.btn--primary:active {
+    background-color: var(--color-primary-offset);
+    transform: translateY(1px);
+    box-shadow: 0 3px 12px -2px inset rgba(50, 50, 50, .25);
+}
+
+.bookmarklet {
+    display: inline-block;
+    padding: .25rem .5rem;
+    border-radius: .25rem;
+    border: 1px solid #43a9a3;
+    background-color: var(--color-secondary);
+    color: #fff;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+.bookmarklet:active {
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.results pre {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-text-offset);
+  overflow: auto;
+  scrollbar-color: rebeccapurple green;
+
+}
+
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg);
+  border-radius: 10px;
+  border: 2px solid var(--color-secondary);
+}
+
+
+</style>
+
+<section class="link-form">
+
+  <h1>Add Link</h1>
+
+      <div>
+        <form>
+          <ul class="form__fields">
+	    <li class=="form__field">
+              <label class="form__label">url</label>
+              <input class="form__input" type="text" name="url" value="example.com" id="url" aria-label="url">
+            </li>
+	    <li class=="form__field">
+              <label class="form__label">title</label>
+              <input class="form__input" type="text" name="title" value="Example" id="title" aria-label="title">
+            </li>
+	    <li class=="form__field">
+              <label class="form__label">excerpt</label>
+	      <textarea class="form__input" rows="4" name="excerpt" value="" id="excerpt" aria-label="excerpt" placeholder="excerpt..."></textarea>
+            </li>
+	    <li class=="form__field">
+              <label class="form__label">notes</label>
+	      <textarea class="form__input" rows="4" name="note" value="" id="notes" aria-label="notes" placeholder="notes.."></textarea>
+            </li>
+	    <li class=="form__field">
+              <label class="form__label">tags</label>
+              <input class="form__input" type="text" name="tags" value="['tag1', 'tag2']" id="tags" aria-label="tags">
+            </li>
+	    <li class=="form__field">
+              <label class="form__label">datetime</label>
+	      <input class="form__input" type="text" name="datetime" value="" id="datetime" aria-label="datetime">
+            </li>
+	  </ul>
+          <div class="form__actions">
+            <button class="btn--primary" type="submit">preview</button>
+          </div>
+        </form>
+      </div>
+
+</section>
+
+<div class="results">
+  <h2>JSON</h2>
+  <pre></pre>
+</div>
+
+<script>
+  let params = (new URL(document.location)).searchParams;
+  let title = decodeURIComponent(params.get('title'));
+  let selection = decodeURIComponent(params.get('body'));
+  let url = decodeURIComponent(params.get('url'));
+  var now = new Date();
+  document.getElementById('url').setAttribute('value', url);
+  document.getElementById('title').setAttribute('value', title);
+  document.getElementById('excerpt').textContent = selection;
+  document.getElementById('datetime').setAttribute('value', now.toISOString());
+</script>
+
+<section class="share">
+          <div class="form__actions">
+            <button class="btn--primary" type="submit">submit</button>
+          </div>
+</section>
+
+<a class="bookmarklet" href="javascript:(function(){var title = document.getElementsByTagName('title')[0].innerHTML;title = encodeURIComponent(title);var selection = '';if (window.getSelection) {selection = window.getSelection().toString();} else if (document.selection &amp;&amp; document.selection.type != 'Control') {selection = document.selection.createRange().text;}selection = encodeURIComponent(selection);new_window=window.open('file:///C:/Users/hiltoncb/Downloads/form.html?title='+title+'&amp;body='+selection+'&amp;url='+encodeURIComponent(document.location.href),'Sharer','resizable,scrollbars,status=0,toolbar=0,menubar=0,titlebar=0,width=680,height=700,location=0');})();">share</a>
+
+<script>
+function share(){
+    // get link title
+    var title = document.getElementsByTagName('title')[0].innerHTML;
+    title = encodeURIComponent(title);
+
+    // get optional text selection
+    var selection = '';
+    if (window.getSelection) {
+        selection = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != 'Control') {
+        selection = document.selection.createRange().text;
+    }
+    selection = encodeURIComponent(selection);
+
+    // generate share URL
+    var url = 'https://mxb.dev/share/?title='+title+'&body='+selection+'&url='+encodeURIComponent(document.location.href);
+
+    // open popup window to sharing form
+    var opts = 'resizable,scrollbars,status=0,toolbar=0,menubar=0,titlebar=0,width=680,height=700,location=0';
+    window.open(url,'Sharer',opts);
+}
+
+const shareForm = document.querySelector('.share');
+shareForm.addEventListener('share', share);
+
+</script>
+  
+
+<script>
+function handleFormSubmit(event) {
+  event.preventDefault();
+  
+  const data = new FormData(event.target);
+  
+  const formJSON = Object.fromEntries(data.entries());
+
+  const results = document.querySelector('.results pre');
+  results.innerText = JSON.stringify(formJSON, null, 2);
+}
+
+const form = document.querySelector('.link-form');
+form.addEventListener('submit', handleFormSubmit);
+</script>
+
+</html>
